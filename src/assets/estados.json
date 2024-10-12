@@ -1,0 +1,20 @@
+[
+    {
+      "estado": "Acre",
+      "cidades": ["Rio Branco", "Cruzeiro do Sul", "Sena Madureira"]
+    },
+    {
+      "estado": "Alagoas",
+      "cidades": ["Maceió", "Arapiraca", "Palmeira dos Índios"]
+    },
+    {
+      "estado": "Bahia",
+      "cidades": ["Salvador", "Feira de Santana", "Vitória da Conquista"]
+    },
+    {
+      "estado": "São Paulo",
+      "cidades": ["São Paulo", "Campinas", "Santos"]
+    }
+  ]
+  
+  
