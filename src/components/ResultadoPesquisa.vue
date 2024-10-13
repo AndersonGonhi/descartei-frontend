@@ -70,7 +70,7 @@ export default {
 
 <style scoped>
 .resultados-container {
-  padding: 40px;
+  padding: 20px;
   background-color: #f8f9fa;
   min-height: 100vh;
 }
@@ -88,7 +88,7 @@ export default {
 }
 
 .logo-text {
-  font-size: 28px;
+  font-size: 34px;
   font-weight: bold;
   color: #4e3d9a;
   margin-left: 10px;
@@ -99,11 +99,12 @@ export default {
 }
 
 .btn-voltar {
-  color: #3bbf60;
-  text-decoration: none;
+  color: #4e3d9a;
+  height: 25px;
+  font-size: 20px;
   font-weight: bold;
-  display: flex;
-  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .btn-voltar:hover {

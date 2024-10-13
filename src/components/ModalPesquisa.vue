@@ -1,10 +1,10 @@
 <template>
     <div class="modal-overlay">
       <div class="modal-conteudo">
-        <h2>Pontos de coleta</h2>
+        <h2>Buscar ponto de coleta</h2>
         <form @submit.prevent="enviarFormulario">
-          <input v-model="cidade" placeholder="Digite a cidade" required />
           <input v-model="estado" placeholder="Digite o estado" required />
+          <input v-model="cidade" placeholder="Digite a cidade" required />
           <div class="buttons">
             <button type="submit" class="btn-buscar">Buscar</button>
             <button type="button" class="btn-fechar" @click="fecharModal">Fechar</button>
@@ -51,7 +51,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,9 +67,11 @@
   }
   
   h2 {
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
     font-size: 1.5rem;
-    color: #333;
+    color: #4e3d9a;
   }
   
   form input {
@@ -87,11 +89,11 @@
   }
   
   .btn-buscar {
-    background-color: #28a745;
+    background-color: #3bbf60;
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
   }
   
@@ -105,7 +107,7 @@
   }
   
   .btn-buscar:hover {
-    background-color: #218838;
+    background-color: #34a556;
   }
   
   .btn-fechar:hover {

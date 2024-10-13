@@ -39,12 +39,18 @@
 
         <div class="form-group">
           <label for="numeroContato">Número para contato</label>
-          <input v-model="ponto.numeroContato" id="numeroContato" required />
+          <input 
+            v-model="ponto.numeroContato"
+            id="numeroContato"
+            required 
+            @input="formatarNumero"
+            maxlength="15"
+            placeholder="(XX) XXXXXXXX"
+          />
         </div>
     
         <h3>Itens de coleta</h3>
         <div class="itens-coleta">
-          
           <div class="item-coleta" :class="{ selected: ponto.itensColeta.includes('Resíduos Orgânicos') }" @click="toggleItemColeta('Resíduos Orgânicos')">
             <img src="../assets/organico.png" alt="Resíduos Orgânicos">
             <p>Resíduos Orgânicos</p>
@@ -64,7 +70,6 @@
             <img src="../assets/oleo.png" alt="Óleo de Cozinha">
             <p>Óleo de Cozinha</p>
           </div>
-         
         </div>
 
         <button type="submit" class="submit-btn">Cadastrar ponto de coleta</button>
@@ -113,9 +118,22 @@ export default {
         this.ponto.itensColeta.push(item);
       }
     },
+    formatarNumero() {
+      let contato = this.ponto.numeroContato.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+      if (contato.length > 0) {
+        contato = `(${contato.slice(0, 2)}) ${contato.slice(2)}`; // Adiciona parênteses no DDD
+      }
+
+      if (contato.length > 10) {
+        contato = `${contato.slice(0, 9)} ${contato.slice(9, 13)}`; // Formata espaço após DDD
+      }
+
+      this.ponto.numeroContato = contato;
+    },
     async cadastrarPonto() {
-      console.log(this.ponto)
-      console.log(this.ponto.itensColeta)
+      console.log(this.ponto);
+      console.log(this.ponto.itensColeta);
       try {
         const resposta = await axios.post('http://localhost:5000/pontocoleta', this.ponto);
         this.mensagemSucesso = 'Ponto cadastrado com sucesso!';
@@ -177,12 +195,14 @@ export default {
 .back-link {
   color: #4e3d9a;
   font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
   text-decoration: none;
+  height: 25px;
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  color: #2a9446;
 }
 
 .form-container {
@@ -265,7 +285,6 @@ input {
   text-align: center;
 }
 
-/* Estilos para os itens de coleta */
 .itens-coleta {
   display: flex;
   justify-content: space-between;
