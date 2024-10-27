@@ -6,7 +6,7 @@
         <span class="logo-text">Descartei</span>
       </div>
       <a @click="goBack" class="back-link">
-        <span class="back-arrow">←</span> Voltar para home
+        <span class="back-arrow">&larr;</span> Voltar para home
       </a>
     </header>
 
@@ -32,7 +32,7 @@
         <div class="form-group half-width">
           <label class="labelcidadeestado" for="cidade">Cidade</label>
           <select v-model="ponto.cidade" id="cidade" :disabled="!ponto.estado" required>
-            <option value=""></option>
+            <option value="">Selecione uma cidade</option>
             <option v-for="cidade in filteredCidades" :key="cidade" :value="cidade">{{ cidade }}</option>
           </select>
         </div>
