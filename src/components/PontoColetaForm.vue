@@ -2,7 +2,7 @@
   <div class="form-page">
     <header class="form-header">
       <div class="logo-container">
-        <img src="../assets/lixeira.png" alt="Logo" class="logo">
+        <img src="../assets/lixeira.png" alt="Logo" class="logo" />
         <span class="logo-text">Descartei</span>
       </div>
       <a @click="goBack" class="back-link">
@@ -20,12 +20,25 @@
           <input v-model="ponto.nomeEntidade" id="nomeEntidade" required />
         </div>
 
+        <!-- Endereço e Número -->
+        <div class="form-group half-width">
+          <label for="endereco">Endereço</label>
+          <input v-model="ponto.endereco" id="endereco" required />
+        </div>
+
+        <div class="form-group half-width">
+          <label for="numero">Número</label>
+          <input v-model="ponto.numero" id="numero" required />
+        </div>
+
         <!-- Estado e Cidade -->
         <div class="form-group half-width">
-          <label class="labelcidadeestado"for="estado">Estado</label>
+          <label class="labelcidadeestado" for="estado">Estado</label>
           <select v-model="ponto.estado" @change="filterCidades" id="estado" required>
             <option value="">Selecione um estado</option>
-            <option v-for="estado in estadosCidades" :key="estado.estado" :value="estado.estado">{{ estado.estado }}</option>
+            <option v-for="estado in estadosCidades" :key="estado.estado" :value="estado.estado">
+              {{ estado.estado }}
+            </option>
           </select>
         </div>
 
@@ -33,41 +46,61 @@
           <label class="labelcidadeestado" for="cidade">Cidade</label>
           <select v-model="ponto.cidade" id="cidade" :disabled="!ponto.estado" required>
             <option value="">Selecione uma cidade</option>
-            <option v-for="cidade in filteredCidades" :key="cidade" :value="cidade">{{ cidade }}</option>
+            <option v-for="cidade in filteredCidades" :key="cidade" :value="cidade">
+              {{ cidade }}
+            </option>
           </select>
         </div>
 
+        <!-- Número para Contato -->
         <div class="form-group">
           <label for="numeroContato">Número para contato</label>
-          <input 
+          <input
             v-model="ponto.numeroContato"
             id="numeroContato"
-            required 
+            required
             @input="formatarNumero"
             maxlength="15"
             placeholder="(XX) XXXXXXXX"
           />
         </div>
-    
+
         <h3>Itens de coleta</h3>
+        <!-- Itens de Coleta -->
         <div class="itens-coleta">
-          <div class="item-coleta" :class="{ selected: ponto.itensColeta.includes('Resíduos Orgânicos') }" @click="toggleItemColeta('Resíduos Orgânicos')">
-            <img src="../assets/organico.png" alt="Resíduos Orgânicos">
+          <div
+            class="item-coleta"
+            :class="{ selected: ponto.itensColeta.includes('Resíduos Orgânicos') }"
+            @click="toggleItemColeta('Resíduos Orgânicos')"
+          >
+            <img src="../assets/organico.png" alt="Resíduos Orgânicos" />
             <p>Resíduos Orgânicos</p>
           </div>
 
-          <div class="item-coleta" :class="{ selected: ponto.itensColeta.includes('Papéis e Papelão') }" @click="toggleItemColeta('Papéis e Papelão')">
-            <img src="../assets/papelao.png" alt="papelao">
+          <div
+            class="item-coleta"
+            :class="{ selected: ponto.itensColeta.includes('Papéis e Papelão') }"
+            @click="toggleItemColeta('Papéis e Papelão')"
+          >
+            <img src="../assets/papelao.png" alt="papelao" />
             <p>Papéis e Papelão</p>
           </div>
 
-          <div class="item-coleta" :class="{ selected: ponto.itensColeta.includes('Resíduos Eletrônicos') }" @click="toggleItemColeta('Resíduos Eletrônicos')">
-            <img src="../assets/eletronico.png" alt="Eletrônicos">
+          <div
+            class="item-coleta"
+            :class="{ selected: ponto.itensColeta.includes('Resíduos Eletrônicos') }"
+            @click="toggleItemColeta('Resíduos Eletrônicos')"
+          >
+            <img src="../assets/eletronico.png" alt="Eletrônicos" />
             <p>Eletrônicos</p>
           </div>
 
-          <div class="item-coleta" :class="{ selected: ponto.itensColeta.includes('Óleo de Cozinha') }" @click="toggleItemColeta('Óleo de Cozinha')">
-            <img src="../assets/oleo.png" alt="Óleo de Cozinha">
+          <div
+            class="item-coleta"
+            :class="{ selected: ponto.itensColeta.includes('Óleo de Cozinha') }"
+            @click="toggleItemColeta('Óleo de Cozinha')"
+          >
+            <img src="../assets/oleo.png" alt="Óleo de Cozinha" />
             <p>Óleo de Cozinha</p>
           </div>
         </div>
@@ -81,6 +114,7 @@
 </template>
 
 <script>
+// Importações e código Vue.js
 import axios from 'axios';
 import estados from '../assets/estados.json';
 
@@ -90,6 +124,8 @@ export default {
     return {
       ponto: {
         nomeEntidade: '',
+        endereco: '',
+        numero: '',
         estado: '',
         cidade: '',
         numeroContato: '',
@@ -119,21 +155,16 @@ export default {
       }
     },
     formatarNumero() {
-      let contato = this.ponto.numeroContato.replace(/\D/g, ''); // Remove caracteres não numéricos
-
+      let contato = this.ponto.numeroContato.replace(/\D/g, '');
       if (contato.length > 0) {
-        contato = `(${contato.slice(0, 2)}) ${contato.slice(2)}`; // Adiciona parênteses no DDD
+        contato = `(${contato.slice(0, 2)}) ${contato.slice(2)}`;
       }
-
       if (contato.length > 10) {
-        contato = `${contato.slice(0, 9)} ${contato.slice(9, 13)}`; // Formata espaço após DDD
+        contato = `${contato.slice(0, 9)} ${contato.slice(9, 13)}`;
       }
-
       this.ponto.numeroContato = contato;
     },
     async cadastrarPonto() {
-      console.log(this.ponto);
-      console.log(this.ponto.itensColeta);
       try {
         const resposta = await axios.post('http://localhost:5000/pontocoleta', this.ponto);
         this.mensagemSucesso = 'Ponto cadastrado com sucesso!';
@@ -145,6 +176,8 @@ export default {
     resetForm() {
       this.ponto = {
         nomeEntidade: '',
+        endereco: '',
+        numero: '',
         estado: '',
         cidade: '',
         numeroContato: '',
@@ -155,6 +188,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 /* Estilos da página de formulário */
