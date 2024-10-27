@@ -3,8 +3,8 @@
     <!-- Cabeçalho com o logo e o botão para voltar à home -->
     <header class="header">
       <div class="logo">
-        <img style="height: 64px; width: 64px;" src="@/assets/lixeira.png" alt="Logo">
-        <span class="logo-text">Descartei</span>
+        <img src="@/assets/lixeira.png" alt="Logo" class="logo__imagem">
+        <span class="logo__texto">Descartei</span>
       </div>
       <div class="back-home">
         <router-link to="/" class="btn-voltar">
@@ -14,16 +14,20 @@
     </header>
 
     <!-- Conteúdo dos pontos de coleta -->
-    <main class="resultados-content">
+    <main class="resultados-conteudo">
       <h2>{{ pontos.length }} ponto(s) encontrado(s)</h2>
       <div v-if="carregando">Carregando...</div>
       <div v-if="erro" class="erro">{{ erro }}</div>
       <div v-else class="pontos-lista">
-        <div v-for="ponto in pontos" :key="ponto.id" class="ponto-item">
-          <img :src="ponto.imagem" alt="Imagem do ponto de coleta" class="ponto-img" />
-          <h3 class="ponto-nome">{{ ponto.nome }}</h3>
-          <p class="ponto-tipo">{{ ponto.tipo }}</p>
-          <p class="ponto-endereco">{{ ponto.endereco }}</p>
+        <div v-for="ponto in pontos" :key="ponto._id" class="ponto-item">
+          <h3 class="ponto-item__nome">{{ ponto.nome }}</h3>
+          <p class="ponto-item__endereco">
+            {{ ponto.endereco }}, {{ ponto.numero }}, {{ ponto.cidade }} - {{ ponto.estado }}
+          </p>
+          <p class="ponto-item__contato">Contato: {{ ponto.numeroContato }}</p>
+          <p class="ponto-item__itens">
+            Itens de Coleta: {{ ponto.itensColeta.join(', ') }}
+          </p>
         </div>
       </div>
     </main>
@@ -37,44 +41,39 @@ export default {
   data() {
     return {
       pontos: [],
-      carregando: true,  // Estado de carregamento
-      erro: null         // Estado para erros
+      carregando: true,
+      erro: null,
     };
   },
   async created() {
     const { cidade, estado } = this.$route.query;
 
     try {
-      // Fazendo requisição à API com os parâmetros de cidade e estado
       const response = await axios.get(`http://localhost:5000/pontocoleta?cidade=${cidade}&estado=${estado}`);
-      
-      // Atualizando os dados dos pontos de coleta com a resposta da API
       this.pontos = response.data;
 
-      // Verifica se nenhum ponto foi encontrado
       if (this.pontos.length === 0) {
         this.erro = "Nenhum ponto de coleta encontrado para a localização fornecida.";
       }
-
     } catch (err) {
-      // Tratamento de erros
       this.erro = "Erro ao carregar os pontos de coleta. Tente novamente mais tarde.";
       console.error(err);
     } finally {
-      // Quando a requisição for concluída, removemos o estado de carregamento
       this.carregando = false;
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
+/* Estilos gerais */
 .resultados-container {
   padding: 20px;
   background-color: #f8f9fa;
   min-height: 100vh;
 }
 
+/* Cabeçalho */
 .header {
   display: flex;
   justify-content: space-between;
@@ -87,35 +86,35 @@ export default {
   align-items: center;
 }
 
-.logo-text {
+.logo__imagem {
+  height: 64px;
+  width: 64px;
+}
+
+.logo__texto {
   font-size: 34px;
   font-weight: bold;
   color: #4e3d9a;
   margin-left: 10px;
 }
 
-.back-home {
-  font-size: 16px;
-}
-
-.btn-voltar {
+.back-home .btn-voltar {
   color: #4e3d9a;
-  height: 25px;
   font-size: 20px;
   font-weight: bold;
-  cursor: pointer;
   text-decoration: none;
 }
 
-.btn-voltar:hover {
+.back-home .btn-voltar:hover {
   color: #2a9446;
 }
 
-.resultados-content {
+/* Conteúdo principal */
+.resultados-conteudo {
   text-align: center;
 }
 
-h2 {
+.resultados-conteudo h2 {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
@@ -127,43 +126,39 @@ h2 {
   margin-bottom: 20px;
 }
 
+/* Lista de pontos */
 .pontos-lista {
   display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
+/* Item do ponto de coleta */
 .ponto-item {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
-  width: 300px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   text-align: left;
 }
 
-.ponto-img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.ponto-nome {
+.ponto-item__nome {
   font-size: 20px;
   color: #4e3d9a;
   margin-bottom: 10px;
 }
 
-.ponto-tipo {
-  font-size: 16px;
-  color: #3bbf60;
-  margin-bottom: 10px;
-}
-
-.ponto-endereco {
+.ponto-item__endereco,
+.ponto-item__contato,
+.ponto-item__itens {
   font-size: 14px;
   color: #555;
+  margin-bottom: 5px;
+}
+
+.ponto-item__itens {
+  font-style: italic;
 }
 </style>
